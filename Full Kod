@@ -1,0 +1,291 @@
+#include <iostream>
+#include <cstdlib>
+#include <ctime>
+#include <string>
+#include <windows.h> 
+using namespace std;
+
+int numberGuesses[50];
+int KvittArray[5];
+int score=0;
+int pointcount;
+
+void spelregler() //visar spelets spelregler
+{
+	system("cls");
+
+
+	cout << "@@@@@@@@@@@@@@@@" << endl;
+	cout << "@@@GAME INFO@@@@" << endl;
+	cout << "@@@@@@@@@@@@@@@@" << endl << endl;
+
+
+	Sleep(1000);
+	
+	cout << "#ROUND#" << endl;
+	cout << "The Cpu picks a number from 1 - 50  for each round," << endl;
+	cout << "The objetiv of the game is for the user to guess the" << endl;
+	cout << "Number the cpu picked with as few guesses as possible." << endl << endl;
+
+
+	cout << "#SCORING SYSTEM#" << endl;
+	cout << "Points will be awarded depending of the number of guesses made." << endl;
+	cout << "1 Guess Gives 10 points, < 3 guesses gives 5 points, < 10 gives 1 point. " << endl << endl;
+
+	cout << "#DOUBLE OR NOTHING#" << endl;
+
+	cout << "When a round has finished the user will get the choice to play Double or Nothing" << endl;
+	cout << "This means that the computer creates 5 randomly generated numbers." << endl;
+	cout << "The computer then selects a number that will be the magic number." << endl;
+	cout << "The user then chooses one of the 5 numbers given." << endl; 
+	cout << "If the user selects the correct number his / her score pot is doubled, but if he / she chooses the wrong number he/she loses all the gathered points." << endl<<endl;
+
+
+
+
+	cout << "Press enter to start the game!" << endl;
+
+
+	system("pause");
+	system("cls");
+	
+
+}
+
+
+int points()
+{
+	
+	
+
+	if (pointcount == 1)
+	{
+		score += 10;
+	}
+	else if ((pointcount < 3)|| (pointcount==3))
+	{
+		score += 3;
+	}
+	else 
+
+	{
+		score += 1;
+	}
+	cout << "You Now have a total score of " << score << "!" << endl;
+
+	return score;
+}
+
+
+
+int gissa_nummer()// Skapar funkionen för att gissa tal
+{
+	setlocale(LC_ALL, "");
+
+	//Generarea ett obestämt nummer
+	int Gcount = 1;
+
+	srand(time(0));
+	int guesses = 0;
+
+	int number = rand() % 50+1;
+
+	
+
+
+	cout << "Guess the magic number! between 1 and 50 ";
+	while (true)
+	{
+		//Promt the user to guess the number
+		
+		cout << "\nEnter your Guess: ";
+		int guess;
+		cin >> guess;
+	
+		numberGuesses[guesses] = guesses;
+
+		guesses++;
+		
+		cout << "This is guess: " << Gcount << endl;
+		
+		if (guess == number) 
+		{
+			pointcount +=1;
+			cout << "Yes, the number is " << number << endl;
+			cout << "You guessed " << Gcount << " times!" << endl;
+			points();
+			
+			
+			break;
+		}
+		else if (guess > number) 
+		{
+			pointcount +=1;
+			Gcount += 1;
+			cout << "Your guess is to high" << endl;
+			Sleep(1000);
+		
+			system("cls");
+		}
+		else
+		{
+			pointcount +=1;
+			Gcount += 1;
+			cout << "Your guess is to low" << endl;
+			Sleep(1000);
+			system("cls");
+		}
+	
+	}
+
+		return number;
+	
+}
+
+void kvitt()//antagande att slumpgöra kvitt eller dubbel värderna.
+{
+	int VinstTal;
+	int Kguess;
+	
+	for (int q = 0; q < 5; q++)
+	{
+
+		KvittArray[q] = rand() % 50 + 1;
+
+		cout << KvittArray[q] << "   ";
+	}
+	VinstTal = KvittArray[2];
+
+		cout << "Choose a number:";
+	cin >> Kguess;
+	
+	if (Kguess == VinstTal)
+	{
+
+		cout << "Yes you guesed the right number! You won! " << endl;
+		score+=score;
+
+
+	}
+	 else if (Kguess != VinstTal)
+
+	{
+		cout << "You did not guess the right number! You loose all your points! Better luck next time! " << endl;
+		cout << "The right number was: " << KvittArray[2] << endl;
+		score-=score;
+
+		
+	}
+	
+
+}
+
+
+
+
+
+void Vmeddelande() //Skapar ett välkomstmeddelande samt ger valet att se reglerna
+{
+	char tecken;
+	cout << "##########################################################" << endl;
+	cout << "#######Welcome to Kardinalens Magic Guessing Game!########" << endl;
+	cout << "##########################################################" << endl;
+
+	string name;
+	cout << "Please enter your name: ";
+	cin >> name;
+
+
+	Sleep(500);
+
+	cout << "Do you want to read the rules? (Typing n will start the game) " << name << "(j/n)";
+	
+	cin >> tecken;
+
+	if ((tecken == 'j') || (tecken == 'J'))
+	{
+		spelregler();
+	}
+	else
+	{
+		system("cls");
+	}
+	
+
+	
+}
+
+
+
+
+int main()
+{
+	char tecken;
+
+
+	Vmeddelande();
+	Sleep(1000);
+
+	
+	cout << "@@@@@@@@@@@@@@@@@@@@@" << endl;
+	cout << "@@@@GAME STARTING@@@@" << endl;
+	cout << "@@@@@@@@@@@@@@@@@@@@@" << endl;
+
+
+	Sleep(1000);
+
+	gissa_nummer();
+	
+
+	cout << "Do you want to play double or nothing? (j/n)";
+	cin >> tecken;
+
+	if ((tecken == 'j') || (tecken == 'J'))
+	{
+
+		kvitt();
+		cout << " You now have " << score << " points!" << endl;
+		
+		cout << "Do you want to play again? (j/n)";
+
+		
+		cin >> tecken;
+		while (true)
+		if ((tecken == 'j') || (tecken == 'J'))
+		{
+
+			gissa_nummer();
+			kvitt();
+		}
+
+		else
+
+			cout << "Thank you for playing! " << endl;
+
+		exit(0);
+	}
+	else
+	{
+
+		cout << "Do you want to play again? (j/n)";
+
+		cin >> tecken;
+
+		if ((tecken == 'j') || (tecken == 'J'))
+		{
+			
+			gissa_nummer();
+
+
+
+		}
+
+		else
+
+			cout << "Thank you for playing! " << endl;
+
+		exit(0);
+	}
+
+
+}
